@@ -182,7 +182,35 @@ app.get('/toll-plaza/coordinates', async (req, res) => {
 });
 
 
- 
+app.get('/toll_parking', async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query('SELECT name, latitude, longitude FROM "highway"."toll_parking"');
+    const data = result.rows;
+    client.release(); // Release the client back to the pool
+    res.json(data);
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/sb_parking', async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query('SELECT name, latitude, longitude FROM "highway"."sb_parking"');
+    const data = result.rows;
+    client.release(); // Release the client back to the pool
+    res.json(data);
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
+
   
   
   
