@@ -208,6 +208,20 @@ app.get('/sb_parking', async (req, res) => {
   }
 });
 
+app.get('/evcharging/coordinates', async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`select name , latitude ,longitude from highway.distinct_g_id_data where type = 'E-Charge'`);
+    const data = result.rows;
+    client.release(); // Release the client back to the pool
+    res.json(data);
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 
 
